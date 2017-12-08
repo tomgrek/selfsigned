@@ -35,7 +35,11 @@ exports.generate = function generate(attrs, options, done) {
   options = options || {};
 
   var generatePem = function (keyPair) {
-    var cert = forge.pki.createCertificate();
+    if (options.useExistingServerCert) {
+      cert = forge.pki.certificateFromPem(require('fs').readFileSync(options.useExistingServerCert));
+    } else {
+      cert = forge.pki.createCertificate();
+    }
 
     cert.serialNumber = toPositiveHex(forge.util.bytesToHex(forge.random.getBytesSync(9))); // the serial number can be decimal or hex (if preceded by 0x)
 
@@ -45,22 +49,22 @@ exports.generate = function generate(attrs, options, done) {
 
     attrs = attrs || [{
       name: 'commonName',
-      value: 'example.org'
+      value: 'iotproject.org'
     }, {
       name: 'countryName',
       value: 'US'
     }, {
       shortName: 'ST',
-      value: 'Virginia'
+      value: 'California'
     }, {
       name: 'localityName',
-      value: 'Blacksburg'
+      value: 'Bay Area'
     }, {
       name: 'organizationName',
-      value: 'Test'
+      value: 'Open IoT Project'
     }, {
       shortName: 'OU',
-      value: 'Test'
+      value: 'My Open IoT Project'
     }];
 
     cert.setSubject(attrs);
