@@ -1,6 +1,6 @@
 Generate a self signed x509 certificate from node.js.
 
-[![Build Status](https://travis-ci.org/jfromaniello/selfsigned.png)](https://travis-ci.org/jfromaniello/selfsigned)
+This version forked from jfromaniello/selfsigned, to add ability to use your existing server cert when generating client certs.
 
 ## Install
 
@@ -56,7 +56,7 @@ var pems = selfsigned.generate(null, {
 If you are in an environment where servers require client certificates, you can generate client keys signed by the original (server) key.
 
 ```js
-var pems = selfsigned.generate(null, { clientCertificate: true });
+var pems = selfsigned.generate(null, { clientCertificate: true, useExistingServerCert: './server-crt.pem' });
 console.log(pems)
 ```
 Will return the following like this:
